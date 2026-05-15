@@ -20,6 +20,14 @@ jobs:
           flutter-version: '3.19.0'
           channel: 'stable'
 
+      - name: Scaffold full Flutter project
+        run: |
+          flutter create -t app scaffold_app --project-name garuda
+          cp -r scaffold_app/android ./android
+          cp -r scaffold_app/ios ./ios
+          cp -r scaffold_app/web ./web
+          rm -rf scaffold_app
+
       - name: Get dependencies
         run: flutter pub get
 
