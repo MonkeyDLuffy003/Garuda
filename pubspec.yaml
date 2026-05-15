@@ -17,7 +17,17 @@ dependencies:
   flutter_spinkit: ^5.2.0
   intl: ^0.18.1
 
+dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/garuda_logo.png"
+  adaptive_icon_background: "#0D5C6E"
+  adaptive_icon_foreground: "assets/images/garuda_logo.png"
+
 flutter:
   uses-material-design: true
   assets:
-    - assets/images/
+    - assets/images/garuda_logo
