@@ -1,41 +1,68 @@
 name: Build Garuda Flutter APK
-on: [push]
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
-
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: "17"
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.0'
-          channel: 'stable'
+          flutter-version: "3.22.0"
+          channel: stable
+          cache: true
 
-      - name: Scaffold full Flutter project
+      - name: Setup project
         run: |
-          flutter create -t app scaffold_app --project-name garuda
-          cp -r scaffold_app/android ./android
-          cp -r scaffold_app/ios ./ios
-          cp -r scaffold_app/web ./web
-          rm -rf scaffold_app
+          flutter create --org com.garuda.research --project-name garuda /tmp/gd
+          rm -rf /tmp/gd/lib
+          cp -r lib /tmp/gd/lib/
+          cp pubspec.yaml /tmp/gd/
+          cp android/app/src/main/AndroidManifest.xml /tmp/gd/android/app/src/main/ 2>/dev/null || true
+          cp android/app/src/main/res/values/styles.xml /tmp/gd/android/app/src/main/res/values/ 2>/dev/null || true
+          sed -i 's/minSdk = flutter.minSdkVersion/minSdk = 23/' /tmp/gd/android/app/build.gradle
+          sed -i 's/minSdkVersion flutter.minSdkVersion/minSdkVersion 23/' /tmp/gd/android/app/build.gradle
+          sed -i 's/targetSdk = flutter.targetSdkVersion/targetSdk = 34/' /tmp/gd/android/app/build.gradle
+          sed -i 's/targetSdkVersion flutter.targetSdkVersion/targetSdkVersion 34/' /tmp/gd/android/app/build.gradle
+          mkdir -p /tmp/gd/assets/images
+          cp assets/images/* /tmp/gd/assets/images/ 2>/dev/null || true
+          find /tmp/gd/assets -type d -exec touch {}/.keep \;
 
-      - name: Get dependencies
+      - name: pub get
+        working-directory: /tmp/gd
         run: flutter pub get
 
+      - name: Generate launcher icons
+        working-directory: /tmp/gd
+        run: dart run flutter_launcher_icons
+
       - name: Build APK
-        run: flutter build apk --release
+        working-directory: /tmp/gd
+        run: flutter build apk --release --split-per-abi
+
+      - name: Build AAB
+        working-directory: /tmp/gd
+        run: flutter build appbundle --release
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: garuda-flutter-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          name: garuda-apk
+          path: /tmp/gd/build/app/outputs/flutter-apk/app-*-release.apk
+          retention-days: 30
+
+      - name: Upload AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: garuda-aab
+          path: /tmp/gd/build/app/outputs/bundle/release/app-release.aab
+          retention-days: 30
