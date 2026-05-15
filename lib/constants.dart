@@ -4,22 +4,23 @@ import 'package:flutter/material.dart';
 // SERVER
 // ─────────────────────────────────────────────
 const String serverUrl = 'https://garuda-server-vhse.onrender.com';
+const String devUsername = 'MonkeyDLuffy003';
 
 // ─────────────────────────────────────────────
 // COLORS — extracted from logo
 // ─────────────────────────────────────────────
-const Color bgColor        = Color(0xFFEFF6F4); // light mint background
-const Color headerDark     = Color(0xFF0D5C6E); // deep teal header
-const Color headerLight    = Color(0xFF1B8A7A); // teal gradient
-const Color accentOrange   = Color(0xFFF57C3A); // orange accent from logo
-const Color accentTeal     = Color(0xFF1B8A7A); // primary teal
-const Color surfaceWhite   = Color(0xFFFFFFFF); // white surface
-const Color userBubble     = Color(0xFFE8D5B0); // warm beige user bubble
-const Color botBubble      = Color(0xFFFFFFFF); // white garuda bubble
-const Color errorBubble    = Color(0xFFF4A0A0); // soft red error
-const Color inputColor     = Color(0xFFE0EDE9); // mint input field
-const Color textDark       = Color(0xFF1A2A2A); // dark text
-const Color textGray       = Color(0xFF6B8A84); // gray text
+const Color bgColor        = Color(0xFFEFF6F4);
+const Color headerDark     = Color(0xFF0D5C6E);
+const Color headerLight    = Color(0xFF1B8A7A);
+const Color accentOrange   = Color(0xFFF57C3A);
+const Color accentTeal     = Color(0xFF1B8A7A);
+const Color surfaceWhite   = Color(0xFFFFFFFF);
+const Color userBubble     = Color(0xFFE8D5B0);
+const Color botBubble      = Color(0xFFFFFFFF);
+const Color errorBubble    = Color(0xFFF4A0A0);
+const Color inputColor     = Color(0xFFE0EDE9);
+const Color textDark       = Color(0xFF1A2A2A);
+const Color textGray       = Color(0xFF6B8A84);
 const Color textWhite      = Color(0xFFFFFFFF);
 const Color errorRed       = Color(0xFFE05555);
 const Color successGreen   = Color(0xFF2ECC71);
