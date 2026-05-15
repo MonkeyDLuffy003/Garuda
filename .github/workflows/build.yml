@@ -34,7 +34,13 @@ jobs:
           sed -i 's/targetSdk = flutter.targetSdkVersion/targetSdk = 34/' /tmp/gd/android/app/build.gradle
           sed -i 's/targetSdkVersion flutter.targetSdkVersion/targetSdkVersion 34/' /tmp/gd/android/app/build.gradle
           mkdir -p /tmp/gd/assets/images
-          cp assets/images/* /tmp/gd/assets/images/ 2>/dev/null || true
+          LOGO=$(find . -name "garuda_logo.png" | head -1)
+          if [ -n "$LOGO" ]; then
+            cp "$LOGO" /tmp/gd/assets/images/garuda_logo.png
+            echo "Logo copied from $LOGO"
+          else
+            echo "WARNING: garuda_logo.png not found"
+          fi
           find /tmp/gd/assets -type d -exec touch {}/.keep \;
 
       - name: pub get
