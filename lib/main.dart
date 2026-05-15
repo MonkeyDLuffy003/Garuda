@@ -35,9 +35,6 @@ class GarudaApp extends StatelessWidget {
   }
 }
 
-// ─────────────────────────────────────────────
-// SPLASH SCREEN
-// ─────────────────────────────────────────────
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -58,10 +55,10 @@ class _SplashScreenState extends State<SplashScreen>
       vsync: this,
       duration: const Duration(milliseconds: 1500),
     );
-    _fadeAnim  = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeIn));
+    _fadeAnim = Tween<double>(begin: 0, end: 1).animate(
+        CurvedAnimation(parent: _controller, curve: Curves.easeIn));
     _scaleAnim = Tween<double>(begin: 0.8, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.elasticOut));
+        CurvedAnimation(parent: _controller, curve: Curves.elasticOut));
     _controller.forward();
     _checkAuth();
   }
@@ -110,28 +107,12 @@ class _SplashScreenState extends State<SplashScreen>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Eagle icon placeholder
-                  Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    child: const Icon(Icons.air, size: 60, color: Colors.white),
+                  Image.asset(
+                    'assets/images/garuda_logo.png',
+                    width: 260,
+                    height: 120,
+                    fit: BoxFit.contain,
                   ),
-                  const SizedBox(height: 24),
-                  const Text('GARUDA', style: TextStyle(
-                    fontSize: 36, fontWeight: FontWeight.w900,
-                    color: Colors.white, letterSpacing: 6,
-                  )),
-                  const SizedBox(height: 8),
-                  Text('RESEARCH VOICE AGENT BOT',
-                    style: TextStyle(
-                      fontSize: 12, letterSpacing: 3,
-                      color: Colors.white.withOpacity(0.7),
-                      fontWeight: FontWeight.w300,
-                    )),
                   const SizedBox(height: 48),
                   SizedBox(
                     width: 32,
