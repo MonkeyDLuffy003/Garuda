@@ -50,7 +50,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _remaining = widget.remaining;
-    _isDev     = widget.isDeveloper;
+    _isDev     = widget.isDeveloper ||
+                 widget.username.toLowerCase() == devUsername.toLowerCase();
     _addWelcome();
     _refreshStatus();
   }
@@ -87,7 +88,8 @@ class _HomeScreenState extends State<HomeScreen> {
     if (result['success'] == true && mounted) {
       setState(() {
         _remaining = result['remaining'] ?? _remaining;
-        _isDev     = result['developer'] ?? _isDev;
+        _isDev     = result['developer'] ?? _isDev ||
+                     widget.username.toLowerCase() == devUsername.toLowerCase();
       });
     }
   }
@@ -135,7 +137,8 @@ class _HomeScreenState extends State<HomeScreen> {
           text: fullResponse, isUser: false, isError: isError));
         if (!isError) {
           _remaining = result['remaining'] ?? _remaining;
-          _isDev     = result['developer'] ?? _isDev;
+          _isDev     = result['developer'] ?? _isDev ||
+                       widget.username.toLowerCase() == devUsername.toLowerCase();
         }
       });
       _scrollToBottom();
@@ -163,9 +166,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // ─────────────────────────────────────────────
-  // HEADER
-  // ─────────────────────────────────────────────
   Widget _buildHeader() {
     return Container(
       decoration: const BoxDecoration(gradient: headerGradient),
@@ -175,7 +175,6 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
           child: Row(
             children: [
-              // Eagle icon
               Container(
                 width: 42,
                 height: 42,
@@ -195,7 +194,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              // Sessions counter
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10, vertical: 5),
@@ -217,7 +215,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               const SizedBox(width: 10),
-              // Memory button
               GestureDetector(
                 onTap: () => Navigator.push(
                   context,
@@ -251,13 +248,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // ─────────────────────────────────────────────
-  // CHAT AREA
-  // ─────────────────────────────────────────────
   Widget _buildChatArea() {
     return ListView.builder(
       controller: _scrollCtrl,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
       itemCount: _messages.length + (_isTyping ? 1 : 0),
       itemBuilder: (context, index) {
         if (_isTyping && index == _messages.length) {
@@ -277,7 +271,6 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           if (!msg.isUser) ...[
-            // Garuda avatar
             Container(
               width: 32,
               height: 32,
@@ -340,7 +333,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           if (msg.isUser) ...[
             const SizedBox(width: 8),
-            // User avatar
             Container(
               width: 32,
               height: 32,
@@ -416,9 +408,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // ─────────────────────────────────────────────
-  // INPUT BAR
-  // ─────────────────────────────────────────────
   Widget _buildInputBar() {
     return Container(
       color: surfaceWhite,
@@ -428,7 +417,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       child: Row(
         children: [
-          // Text input pill
           Expanded(
             child: Container(
               decoration: BoxDecoration(
@@ -451,7 +439,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const SizedBox(width: 8),
-          // Mic button
           GestureDetector(
             onTap: _showMicPopup,
             child: Container(
@@ -470,7 +457,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const SizedBox(width: 8),
-          // Send button
           GestureDetector(
             onTap: _sendMessage,
             child: Container(
