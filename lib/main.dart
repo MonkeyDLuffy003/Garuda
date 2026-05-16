@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'constants.dart';
-import 'auth_screen.dart';
 import 'home_screen.dart';
 
 void main() async {
@@ -37,62 +35,33 @@ class GarudaApp extends StatelessWidget {
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
-
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _fadeAnim;
-  late Animation<double> _scaleAnim;
+  late AnimationController _ctrl;
+  late Animation<double> _fade;
+  late Animation<double> _scale;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1500),
-    );
-    _fadeAnim = Tween<double>(begin: 0, end: 1).animate(
-        CurvedAnimation(parent: _controller, curve: Curves.easeIn));
-    _scaleAnim = Tween<double>(begin: 0.8, end: 1.0).animate(
-        CurvedAnimation(parent: _controller, curve: Curves.elasticOut));
-    _controller.forward();
-    _checkAuth();
-  }
-
-  Future<void> _checkAuth() async {
-    await Future.delayed(const Duration(seconds: 2));
-    final prefs = await SharedPreferences.getInstance();
-    final username = prefs.getString('username') ?? '';
-    if (!mounted) return;
-    if (username.isNotEmpty) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) => HomeScreen(
-            username: username,
-            isDeveloper: prefs.getBool('is_developer') ?? false,
-            referralCode: prefs.getString('referral_code') ?? '',
-            remaining: prefs.getInt('remaining') ?? 20,
-          ),
-        ),
-      );
-    } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const AuthScreen()),
-      );
-    }
+    _ctrl  = AnimationController(vsync: this, duration: const Duration(milliseconds: 1400));
+    _fade  = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeIn));
+    _scale = Tween<double>(begin: 0.8, end: 1.0).animate(CurvedAnimation(parent: _ctrl, curve: Curves.elasticOut));
+    _ctrl.forward();
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (_) => const HomeScreen()));
+      }
+    });
   }
 
   @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+  void dispose() { _ctrl.dispose(); super.dispose(); }
 
   @override
   Widget build(BuildContext context) {
@@ -101,27 +70,35 @@ class _SplashScreenState extends State<SplashScreen>
         decoration: const BoxDecoration(gradient: splashGradient),
         child: Center(
           child: FadeTransition(
-            opacity: _fadeAnim,
+            opacity: _fade,
             child: ScaleTransition(
-              scale: _scaleAnim,
+              scale: _scale,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    'assets/images/garuda_logo.png',
-                    width: 260,
-                    height: 120,
-                    fit: BoxFit.contain,
+                  Container(
+                    width: 100, height: 100,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: const Icon(Icons.air, size: 60, color: Colors.white),
                   ),
+                  const SizedBox(height: 24),
+                  const Text('GARUDA', style: TextStyle(
+                    fontSize: 36, fontWeight: FontWeight.w900,
+                    color: Colors.white, letterSpacing: 6)),
+                  const SizedBox(height: 8),
+                  Text('RESEARCH VOICE AGENT BOT', style: TextStyle(
+                    fontSize: 12, letterSpacing: 3,
+                    color: Colors.white.withOpacity(0.7),
+                    fontWeight: FontWeight.w300)),
                   const SizedBox(height: 48),
                   SizedBox(
-                    width: 32,
-                    height: 32,
+                    width: 32, height: 32,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      color: Colors.white.withOpacity(0.7),
-                    ),
-                  ),
+                      color: Colors.white.withOpacity(0.7))),
                 ],
               ),
             ),
