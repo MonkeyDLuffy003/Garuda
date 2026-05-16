@@ -242,6 +242,31 @@ class _HomeScreenState extends State<HomeScreen> {
                     )),
                 ),
               ),
+              const SizedBox(width: 10),
+              GestureDetector(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => SettingsScreen(
+                      username: widget.username,
+                    ),
+                  ),
+                ),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const Text('KEYS',
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    )),
+                ),
+              ),
             ],
           ),
         ),
