@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 // ─────────────────────────────────────────────
 const String serverUrl = 'https://garuda-server-vhse.onrender.com';
 const String devUsername = 'MonkeyDLuffy003';
+const String devCode = 'GARUDA_TEJATECH_DEV';
 
 // ─────────────────────────────────────────────
 // COLORS — extracted from logo
