@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'constants.dart';
 import 'api_service.dart';
 import 'memory_screen.dart';
+import 'settings_screen.dart';
 
 class ChatMessage {
   final String text;
